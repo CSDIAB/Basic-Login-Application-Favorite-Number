@@ -22,7 +22,7 @@
   - a user will need to have a favorite_number
   - it can have a default value
   - is there a method in the data layer to update this value? If not can one be added and even tested in the init method?
-  - is favorite_number being returned when the token is exchanged for the user? 
+  - is favorite_number being returned when the token is exchanged for the user?
   - can this property be displayed on the home component?
   - once it can be displayed, how can it be changed?
   - a select object can both display the value and call a method which updates it
@@ -30,9 +30,10 @@
   - can you secure that route?
 
 ## Tier Two
+
 - add a property of is_admin for users which will determine if a logged in user is an administrator
   - a simple approach might be to have a setAdministrator function in your data layer
-  - you call it during init for one of the seeded users 
+  - you call it during init for one of the seeded users
 - an administrator should see a link which will enable them to see all the users in the system
   - start by showing the link only if a user is an administrator
 - an administrator can set other users as administrators
@@ -60,6 +61,7 @@ npm install && cd client && npm install
 ```
 
 - start server in root directory of repository
+
 ```
 npm run start:dev
 ```
@@ -73,6 +75,7 @@ npm run dev
 - use a username and password in server/index.js in order to test out application.
 
 # to test deployment
+
 ```
 cd client && npm run build
 ```
@@ -80,13 +83,15 @@ cd client && npm run build
 browse to localhost:3000 (or whatever server port you used)
 
 # to deploy
+
 - build script for deploy
 
 ```
 npm install && cd client && npm install && npm run build
 
 ```
-- start script for deploy 
+
+- start script for deploy
 
 ```
 node server/index.js
@@ -99,4 +104,3 @@ node server/index.js
 JWT for jwt secret
 DATABASE_URL for postgres database
 ```
-

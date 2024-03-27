@@ -5,6 +5,7 @@ const {
   fetchUsers,
   authenticate,
   findUserWithToken,
+  updateUserNum
 } = require('./db');
 const express = require('express');
 const app = express();
@@ -25,12 +26,37 @@ const isLoggedIn = async(req, res, next)=> {
   }
 };
 
+app.patch ('/api/users/favnum', isLoggedIn, async(req, res, next)=> {
+  try {
 
+    console.log(req.headers.authorization);
+    console.log(req.body.number);
+    const user = await findUserWithToken(req.headers.authorization);
+    await updateUserNum(user.id, req.body.number);
+    res.send({message: "success", number : req.body.number });
+  }
+  catch(ex){
+    next(ex);
+  }
+});
 app.post('/api/auth/login', async(req, res, next)=> {
   try {
     res.send(await authenticate(req.body));
   }
   catch(ex){
+    console.log("ERROR IN SERVER ROUTE");
+    next(ex);
+  }
+});
+
+app.post('/api/auth/register', async(req, res, next)=> {
+  try {
+    const newUser = await createUser(req.body);
+    console.log(newUser);
+    res.send(await authenticate(req.body));
+  }
+  catch(ex){
+    console.log("ERROR IN SERVER ROUTE");
     next(ex);
   }
 });
@@ -67,14 +93,16 @@ const init = async()=> {
   console.log('tables created');
 
   const [moe, lucy, ethyl, curly] = await Promise.all([
-    createUser({ username: 'moe', password: 'm_pw'}),
+    createUser({ username: 'moe', password: 'm_pw', favoriteNum: 6}),
     createUser({ username: 'lucy', password: 'l_pw'}),
-    createUser({ username: 'ethyl', password: 'e_pw'}),
+    createUser({ username: 'ethyl', password: 'e_pw', favoriteNum: 4}),
     createUser({ username: 'curly', password: 'c_pw'})
   ]);
 
   console.log(await fetchUsers());
-
+  
+  await updateUserNum(curly.id, 3);
+  console.log(await fetchUsers());
   app.listen(port, ()=> console.log(`listening on port ${port}`));
 };
 
